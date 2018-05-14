@@ -131,6 +131,17 @@ static NSInteger const kAdSequenceNone = -1;
         URLString = [URLString stringByAppendingString:[self queryParameterForViewability]];
     }
 
+	// used by AdTester
+	if ([adUnitID hasPrefix:@"ASTAR"]) {
+		if ([adUnitID hasPrefix:@"ASTAR-MRAIDTEST"]) {
+			URLString = [NSString stringWithFormat:@"https://mraid-testing.astar.mobi/mraid.php?v=%@&udid=%@&id=%@&nv=%@",
+						 MP_SERVER_VERSION,
+						 [MPIdentityProvider identifier],
+						 [adUnitID stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+						 MP_SDK_VERSION];
+		}
+	}
+
     return [NSURL URLWithString:URLString];
 }
 

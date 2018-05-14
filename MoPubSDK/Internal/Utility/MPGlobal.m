@@ -185,7 +185,10 @@ BOOL MPViewIntersectsParentWindowWithPercent(UIView *view, CGFloat percentVisibl
 
 NSString *MPResourcePathForResource(NSString *resourceName)
 {
-    if ([[NSBundle mainBundle] pathForResource:@"MoPub" ofType:@"bundle"] != nil) {
+    // astarsoftware
+    return [@"AdManagementResources.bundle" stringByAppendingPathComponent:resourceName];
+	
+    /*if ([[NSBundle mainBundle] pathForResource:@"MoPub" ofType:@"bundle"] != nil) {
         return [@"MoPub.bundle" stringByAppendingPathComponent:resourceName];
     }
     else if ([[UIDevice currentDevice].systemVersion compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending) {
@@ -203,7 +206,7 @@ NSString *MPResourcePathForResource(NSString *resourceName)
         // 2. This is cocoapods but CAN'T be using frameworks since that is only allowed
         // on ios 8 and above.
         return resourceName;
-    }
+    }*/
 }
 
 NSArray *MPConvertStringArrayToURLArray(NSArray *strArray)

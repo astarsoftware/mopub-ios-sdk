@@ -138,6 +138,15 @@ const NSTimeInterval kRequestTimeoutInterval = 10.0;
     }
 
     self.loading = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AdResponseReceivedFromMopub"
+							object:nil
+						      userInfo:@{
+						     @"AdData":self.responseHeaders,
+						  @"AdContent":self.responseData,
+							@"URL":[self.URL absoluteString]
+    }];
+
     [self.delegate communicatorDidReceiveAdConfiguration:configuration];
 }
 
