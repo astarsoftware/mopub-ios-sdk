@@ -92,7 +92,7 @@ static NSString * const kMultiAdResponsesAdMarkupKey = @"adm";
         }
 
         // Handle the response.
-        [strongSelf didFinishLoadingWithData:data headers:response.allHeaderFields];
+        [strongSelf didFinishLoadingRequest:request withData:data headers:response.allHeaderFields];
 
     } errorHandler:^(NSError * error) {
         // Capture strong self for the duration of this block.
@@ -124,7 +124,7 @@ static NSString * const kMultiAdResponsesAdMarkupKey = @"adm";
     [self.delegate communicatorDidFailWithError:error];
 }
 
-- (void)didFinishLoadingWithData:(NSData *)data headers:(NSDictionary *)headers {
+- (void)didFinishLoadingRequest:(NSURLRequest *)req withData:(NSData *)data headers:(NSDictionary *)headers {
     NSArray <MPAdConfiguration *> *configurations;
     // Single ad response
     if (![headers[kAdResponseTypeHeaderKey] isEqualToString:kAdResponseTypeMultipleResponse]) {
@@ -181,6 +181,15 @@ static NSString * const kMultiAdResponsesAdMarkupKey = @"adm";
     }
 
     self.loading = NO;
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AdResponseReceivedFromMopub"
+							object:nil
+						      userInfo:@{
+						     @"AdData":headers,
+						  @"AdContent":data,
+							@"URL":[req.URL absoluteString]
+    }];
+
     [self.delegate communicatorDidReceiveAdConfigurations:configurations];
 }
 
