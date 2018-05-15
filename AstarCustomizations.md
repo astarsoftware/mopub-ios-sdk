@@ -4,5 +4,3 @@
 * MPAdServerCommunicator.m
 * MPAdServerURLBuilder.m
 * MPGlobal.m
-* MPMillennialBannerCustomEvent.m
-* MPMillennialInterstitialCustomEvent.m
