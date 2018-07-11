@@ -163,7 +163,7 @@
 
     MPLogInfo(@"Banner view (%@) loading ad with MoPub server URL: %@", [self.delegate adUnitId], URL);
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MopubLoadingAdWithUrl"
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"MopubLoadingBannerAdWithUrl"
 														object:nil
 													  userInfo:@{ @"URL":URL.absoluteString }];
 	
