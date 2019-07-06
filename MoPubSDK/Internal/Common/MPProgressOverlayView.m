@@ -1,7 +1,7 @@
 //
 //  MPProgressOverlayView.m
 //
-//  Copyright 2018 Twitter, Inc.
+//  Copyright 2018-2019 Twitter, Inc.
 //  Licensed under the MoPub SDK License Agreement
 //  http://www.mopub.com/legal/sdk-license-agreement/
 //
@@ -36,9 +36,6 @@ static NSString * const kCloseButtonXImageName = @"MPCloseButtonX.png";
 static void exponentialDecayInterpolation(void *info, const CGFloat *input, CGFloat *output);
 
 @implementation MPProgressOverlayView
-
-@synthesize delegate = _delegate;
-@synthesize closeButton = _closeButton;
 
 - (id)initWithDelegate:(id<MPProgressOverlayViewDelegate>)delegate
 {

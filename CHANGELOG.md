@@ -1,3 +1,45 @@
+## Version 5.7.1 (June 3, 2019)
+- **Features**
+  - Impression Level Revenue Data can now be received via a notification
+
+- **Bug Fixes**
+  - Fixed occasional crash due to multithreading bug
+
+## Version 5.7.0 (May 20, 2019)
+- **Features**
+  - Impression Level Revenue Data: A data object that includes revenue information associated with each impression
+  - Verizon Ads SDK now supported as a mediated network
+
+- **Bug Fixes**
+  - Fixed bug where native video fires an impression when main image asset is missing
+  - Fixed MRAID off-screen compliance for resized ads on tablets
+  - Fixed crash in Canary App when tapping on the `+` on iPad
+  - Replaced deprecated usage of `openURL:` with `openURL:options:completionHandler:` for iOS10+
+  - Fixed bug where click trackers can fire more than once on HTML banners and HTML interstitials
+  - Fixed bug in Canary App where ad units that were read using the QR code reader were not being saved
+  - Fixed bug where GDPR consent dialog was allowed to be presented twice in a row
+
+## Version 5.6.0 (March 18, 2019)
+- **Features**
+  - Added `+` button to the Canary sample app allowing manual entry of custom ad units
+
+- **Bug Fixes**
+  - MRAID orientation, expansion, and resizing edge case bug fixes
+  - MRAID expansion will no longer trigger a click tracking event
+  - MRAID logging no longer spams the device console
+  - Fixed position bug of the Rewarded Video countdown timer when rotating the device after the ad loads
+
+## Version 5.5.0 (January 28, 2019)
+- **Features**
+  - Advanced Bidding automatically initializes
+  - GDPR legitimate interest API now available; publishers may opt into allowing supported networks to collect user information on the basis of legitimate interest.
+  - We now distribute separate frameworks for simulator, device, and universal architectures
+
+- **Bug Fixes**
+  - Fixed rewarded video state occasionally not being reset correctly upon load failure
+  - Tweaked MRAID `ready` event timing so that it's in-spec
+  - Canary test app improvements and bug fixes
+
 ## Version 5.4.1 (November 28, 2018)
 - **Bug Fixes**
   - Changed the MoPubSampleApp+Framework target to MoPubSampleApp in the Objective-C Sample App.
@@ -13,7 +55,7 @@
   - HTTP error codes now include the localized error description.
   - Added missing mraid.js file protections when showing MRAID ads.
   - Fixed native video crash.
-  - Fixed native ad timeout timer invalidation. 
+  - Fixed native ad timeout timer invalidation.
 
 ## Version 5.3.0 (August 15, 2018)
 - **Features**

@@ -1,7 +1,7 @@
 //
 //  MPAdServerKeys.h
 //
-//  Copyright 2018 Twitter, Inc.
+//  Copyright 2018-2019 Twitter, Inc.
 //  Licensed under the MoPub SDK License Agreement
 //  http://www.mopub.com/legal/sdk-license-agreement/
 //
@@ -37,10 +37,16 @@ extern NSString * const kViewabilityStatusKey;
 extern NSString * const kKeywordsKey;
 extern NSString * const kUserDataKeywordsKey;
 extern NSString * const kAdvancedBiddingKey;
+extern NSString * const kNetworkAdaptersKey;
 extern NSString * const kLocationLatitudeLongitudeKey;
 extern NSString * const kLocationHorizontalAccuracy;
 extern NSString * const kLocationIsFromSDK;
 extern NSString * const kLocationLastUpdatedMilliseconds;
+extern NSString * const kBackoffMsKey;
+extern NSString * const kBackoffReasonKey;
+
+#pragma mark - Ad Server Response Keys
+extern NSString * const kEnableDebugLogging;
 
 #pragma mark - Open Endpoint Request Keys
 extern NSString * const kOpenEndpointSessionTrackingKey;
@@ -94,3 +100,20 @@ extern NSString * const kRewardedCurrencyNameKey;
 extern NSString * const kRewardedCurrencyAmountKey;
 extern NSString * const kRewardedCustomEventNameKey;
 extern NSString * const kRewardedCustomDataKey;
+
+#pragma mark - Impression Level Revenue Data Keys
+
+extern NSString * const kImpressionDataImpressionIDKey;
+extern NSString * const kImpressionDataAdUnitIDKey;
+extern NSString * const kImpressionDataAdUnitNameKey;
+extern NSString * const kImpressionDataAdUnitFormatKey;
+extern NSString * const kImpressionDataAdGroupIDKey;
+extern NSString * const kImpressionDataAdGroupNameKey;
+extern NSString * const kImpressionDataAdGroupTypeKey;
+extern NSString * const kImpressionDataAdGroupPriorityKey;
+extern NSString * const kImpressionDataCurrencyKey;
+extern NSString * const kImpressionDataCountryKey;
+extern NSString * const kImpressionDataNetworkNameKey;
+extern NSString * const kImpressionDataNetworkPlacementIDKey;
+extern NSString * const kImpressionDataPublisherRevenueKey;
+extern NSString * const kImpressionDataPrecisionKey;

@@ -1,7 +1,7 @@
 //
 //  MPAdBrowserController.m
 //
-//  Copyright 2018 Twitter, Inc.
+//  Copyright 2018-2019 Twitter, Inc.
 //  Licensed under the MoPub SDK License Agreement
 //  http://www.mopub.com/legal/sdk-license-agreement/
 //
@@ -12,6 +12,7 @@
 #import "MPAPIEndpoints.h"
 #import "NSBundle+MPAdditions.h"
 #import "MPURLRequest.h"
+#import "MoPub+Utility.h"
 
 static NSString * const kAdBrowserControllerNibName = @"MPAdBrowserController";
 
@@ -225,7 +226,7 @@ static NSString * const kAdBrowserControllerNibName = @"MPAdBrowserController";
     self.actionSheet = nil;
     if (buttonIndex == 0) {
         // Open in Safari.
-        [[UIApplication sharedApplication] openURL:self.URL];
+        [MoPub openURL:self.URL];
     }
 }
 
@@ -242,7 +243,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     BOOL appShouldOpenURL = ![self.URL.scheme isEqualToString:@"http"] && ![self.URL.scheme isEqualToString:@"https"];
 
     if (appShouldOpenURL) {
-        [[UIApplication sharedApplication] openURL:self.URL];
+        [MoPub openURL:self.URL];
     }
 
     return !appShouldOpenURL;
@@ -285,7 +286,7 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
     // Ignore "Frame Load Interrupted" errors after navigating to iTunes or the App Store.
     if (error.code == 102 && [error.domain isEqual:@"WebKitErrorDomain"]) return;
 
-    MPLogError(@"Ad browser (%p) experienced an error: %@.", self, [error localizedDescription]);
+    MPLogEvent([MPLogEvent error:error message:nil]);
 }
 
 #pragma mark -

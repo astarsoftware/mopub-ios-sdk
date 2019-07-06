@@ -1,7 +1,7 @@
 //
 //  MPConsentDialogViewController.m
 //
-//  Copyright 2018 Twitter, Inc.
+//  Copyright 2018-2019 Twitter, Inc.
 //  Licensed under the MoPub SDK License Agreement
 //  http://www.mopub.com/legal/sdk-license-agreement/
 //
@@ -10,6 +10,7 @@
 #import "MPConsentDialogViewController.h"
 #import "MPGlobal.h"
 #import "MPWebView.h"
+#import "MoPub+Utility.h"
 
 typedef void(^MPConsentDialogViewControllerCompletion)(BOOL success, NSError *error);
 
@@ -204,7 +205,7 @@ static NSTimeInterval const kCloseButtonFadeInAfterSeconds = 10.0;
 
     // Kick to Safari if the URL is not of MoPub scheme or hostname
     if (!requestIsMoPubScheme && !requestIsMoPubHost) {
-        [[UIApplication sharedApplication] openURL:request.URL];
+        [MoPub openURL:request.URL];
         return NO;
     }
 

@@ -1,7 +1,7 @@
 //
 //  MPBaseInterstitialAdapter.m
 //
-//  Copyright 2018 Twitter, Inc.
+//  Copyright 2018-2019 Twitter, Inc.
 //  Licensed under the MoPub SDK License Agreement
 //  http://www.mopub.com/legal/sdk-license-agreement/
 //
@@ -25,10 +25,6 @@
 @end
 
 @implementation MPBaseInterstitialAdapter
-
-@synthesize delegate = _delegate;
-@synthesize configuration = _configuration;
-@synthesize timeoutTimer = _timeoutTimer;
 
 - (id)initWithDelegate:(id<MPInterstitialAdapterDelegate>)delegate
 {
@@ -88,7 +84,7 @@
 
 - (void)timeout
 {
-    NSError * error = [MOPUBError errorWithCode:MOPUBErrorAdRequestTimedOut localizedDescription:@"Interstitial ad request timed out"];
+    NSError * error = [NSError errorWithCode:MOPUBErrorAdRequestTimedOut localizedDescription:@"Interstitial ad request timed out"];
     [self.delegate adapter:self didFailToLoadAdWithError:error];
     self.delegate = nil;
 }
@@ -105,6 +101,7 @@
 - (void)trackImpression
 {
     [[MPAnalyticsTracker sharedTracker] trackImpressionForConfiguration:self.configuration];
+    [self.delegate interstitialDidReceiveImpressionEventForAdapter:self];
 }
 
 - (void)trackClick
