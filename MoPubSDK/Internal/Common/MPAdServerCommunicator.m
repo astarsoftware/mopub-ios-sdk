@@ -64,7 +64,7 @@ static NSString * const kAdResonsesContentKey = @"content";
     self = [super init];
     if (self) {
         _delegate = delegate;
-        _topLevelJsonKeys = @[kNextUrlMetadataKey];
+        _topLevelJsonKeys = @[kNextUrlMetadataKey, kFormatMetadataKey];
     }
     return self;
 }
@@ -104,8 +104,7 @@ static NSString * const kAdResonsesContentKey = @"content";
         __typeof__(self) strongSelf = weakSelf;
 
         // Handle the response.
-		[strongSelf didFinishLoadingRequest:request withData:data headers:response.allHeaderFields];
-
+        [strongSelf didFinishLoadingWithData:data];
     } errorHandler:^(NSError * error) {
         // Capture strong self for the duration of this block.
         __typeof__(self) strongSelf = weakSelf;
@@ -170,7 +169,14 @@ static NSString * const kAdResonsesContentKey = @"content";
     [self.delegate communicatorDidFailWithError:error];
 }
 
-- (void)didFinishLoadingRequest:(NSURLRequest *)req withData:(NSData *)data headers:(NSDictionary *)headers {
+- (void)didFinishLoadingWithData:(NSData *)data {
+    // In the event that the @c adUnitIdUsedForConsent from @c MPConsentManager is @c nil or malformed,
+    // we should populate it with this known good adunit ID. This is to cover any edge case where the
+    // publisher manages to initialize with no adunit ID or a malformed adunit ID.
+    // It is known good since this is the success callback from the ad request.
+    NSString * adunitID = [self.delegate adUnitIDForAdServerCommunicator:self];
+    [MPConsentManager.sharedManager setAdUnitIdUsedForConsent:adunitID isKnownGood:YES];
+
     // Headers from the original HTTP response are intentionally ignored as laid out
     // by the Client Side Waterfall design doc.
     //
@@ -241,20 +247,6 @@ static NSString * const kAdResonsesContentKey = @"content";
                                                                 reason:backoffReason];
 
     self.loading = NO;
-
-	NSMutableArray *responseMetadataArray = [NSMutableArray array];
-	for (NSDictionary *responseJson in responses) {
-		NSDictionary *metadata = responseJson[kAdResonsesMetadataKey];
-		if(metadata) {
-			[responseMetadataArray addObject:metadata];
-		}
-	}
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"AdResponseReceivedFromMopub"
-							object:nil
-						      userInfo:@{
-										 @"HttpHeaders":headers,
-										 @"ResponseMetadata":responseMetadataArray}];
-
     [self.delegate communicatorDidReceiveAdConfigurations:configurations];
 }
 
