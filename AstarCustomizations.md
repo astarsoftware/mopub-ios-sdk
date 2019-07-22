@@ -3,4 +3,3 @@
 
 * MPAdServerCommunicator.m
 * MPAdServerURLBuilder.m
-* MPGlobal.m
