@@ -247,6 +247,21 @@ static NSString * const kAdResonsesContentKey = @"content";
                                                                 reason:backoffReason];
 
     self.loading = NO;
+    
+    NSMutableArray *responseMetadataArray = [NSMutableArray array];
+    for (NSDictionary *responseJson in responses) {
+        NSDictionary *metadata = responseJson[kAdResonsesMetadataKey];
+        if(metadata) {
+            [responseMetadataArray addObject:metadata];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AdResponseReceivedFromMopub"
+                                                        object:nil
+                                                      userInfo:@{
+                                                                 @"HttpHeaders":headers,
+                                                                 @"ResponseMetadata":responseMetadataArray}];
+
+    
     [self.delegate communicatorDidReceiveAdConfigurations:configurations];
 }
 

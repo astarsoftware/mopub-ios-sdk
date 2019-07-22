@@ -223,6 +223,17 @@ static MPEngineInfo * _engineInfo = nil;
     queryParams[kBackoffMsKey]                  = [self backoffMillisecondsValueForAdUnitID:adUnitID];
     queryParams[kBackoffReasonKey]              = [[MPRateLimitManager sharedInstance] lastRateLimitReasonForAdUnitId:adUnitID];
     [queryParams addEntriesFromDictionary:[self locationInformationDictionary:targeting.location]];
+    
+    // used by AdTester
+    if ([adUnitID hasPrefix:@"ASTAR"]) {
+        if ([adUnitID hasPrefix:@"ASTAR-MRAIDTEST"]) {
+            return [NSURL URLWithString:[NSString stringWithFormat:@"https://mraid-testing.astar.mobi/mraid.php?v=%@&udid=%@&id=%@&nv=%@",
+                                         MP_SERVER_VERSION,
+                                         [MPIdentityProvider identifier],
+                                         [adUnitID stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                                         MP_SDK_VERSION]];
+        }
+    }
 
     return [self URLWithEndpointPath:MOPUB_API_PATH_AD_REQUEST postData:queryParams];
 }
