@@ -104,7 +104,7 @@ static NSString * const kAdResonsesContentKey = @"content";
         __typeof__(self) strongSelf = weakSelf;
 
         // Handle the response.
-        [strongSelf didFinishLoadingWithData:data];
+        [strongSelf didFinishLoadingWithData:data headers:response.allHeaderFields];
     } errorHandler:^(NSError * error) {
         // Capture strong self for the duration of this block.
         __typeof__(self) strongSelf = weakSelf;
@@ -169,7 +169,7 @@ static NSString * const kAdResonsesContentKey = @"content";
     [self.delegate communicatorDidFailWithError:error];
 }
 
-- (void)didFinishLoadingWithData:(NSData *)data {
+- (void)didFinishLoadingWithData:(NSData *)data headers:(NSDictionary *)headers{
     // In the event that the @c adUnitIdUsedForConsent from @c MPConsentManager is @c nil or malformed,
     // we should populate it with this known good adunit ID. This is to cover any edge case where the
     // publisher manages to initialize with no adunit ID or a malformed adunit ID.
