@@ -238,7 +238,6 @@
             [self.delegate managerWillDismissInterstitial:self];
             break;
         case MPFullscreenAdEventDidDisappear:
-            self.ready = NO; // This state reset was put back here to accommodate adapters using the wrong event upon dismissal
             MPLogAdEvent(MPLogEvent.adDidDisappear, self.delegate.interstitialAdController.adUnitId);
             [self.delegate managerDidDismissInterstitial:self];
             break;
@@ -249,7 +248,9 @@
         case MPFullscreenAdEventWillLeaveApplication: // no op
             MPLogAdEvent(MPLogEvent.adWillLeaveApplication, self.delegate.interstitialAdController.adUnitId);
             break;
-        case MPFullscreenAdEventWillDismiss: {
+        case MPFullscreenAdEventWillDismiss:
+            break;
+        case MPFullscreenAdEventDidDismiss: {
             // End the Viewability session and schedule the previously onscreen adapter for
             // deallocation if it exists since it is going offscreen. This only applies to
             // webview-based content.
@@ -259,6 +260,7 @@
             }
 
             // Reset state
+            self.adapter = nil;     // `nil` to trigger the scheduled deallocation since we are handing over ownership of the reference
             self.ready = NO;
             self.loading = NO;
             break;
@@ -318,11 +320,11 @@
  `MPInterstitialAdManager` needs to have empty implementation for `MPAdAdapterRewardEventDelegate`.
  */
 
-- (NSString *)customerId {
+- (NSString * _Nullable)customerId {
     return nil;
 }
 
-- (id<MPMediationSettingsProtocol>)instanceMediationSettingsForClass:(Class)aClass {
+- (id<MPMediationSettingsProtocol> _Nullable)instanceMediationSettingsForClass:(Class)aClass {
     return nil;
 }
 

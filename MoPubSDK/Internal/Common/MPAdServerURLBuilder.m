@@ -9,9 +9,13 @@
 #import "MPAdServerURLBuilder.h"
 
 #import <CoreLocation/CoreLocation.h>
+#if __has_include(<MoPub/MoPub-Swift.h>)
+    #import <MoPub/MoPub-Swift.h>
+#else
+    #import "MoPub-Swift.h"
+#endif
 
 #import "MPAdServerKeys.h"
-#import "MPAPIEndpoints.h"
 #import "MPConsentManager.h"
 #import "MPConstants.h"
 #import "MPCoreInstanceProvider+MRAID.h"
@@ -91,9 +95,8 @@ static MPEngineInfo * _engineInfo = nil;
 
 #pragma mark - URL Building
 
-+ (MPURL *)URLWithEndpointPath:(NSString *)endpointPath postData:(NSDictionary *)parameters {
++ (MPURL *)URLWithComponents:(NSURLComponents *)components postData:(NSDictionary *)parameters {
     // Build the full URL string
-    NSURLComponents * components = [MPAPIEndpoints baseURLComponentsWithPath:endpointPath];
     return [MPURL URLWithComponents:components postData:parameters];
 }
 
@@ -263,20 +266,7 @@ static MPEngineInfo * _engineInfo = nil;
 
     [queryParams addEntriesFromDictionary:self.locationInformation];
 
-// This should probably be completely removed at this point. I think this is a remnant from when MoPub and it's resources were all included as part of our project and we had to add/remove files and test to make sure we had the MRAID bundle properly included. Now we just depend on MoPub's framework that we build with minimal changes
-//    // used by AdTester
-//    if ([adUnitID hasPrefix:@"ASTAR"]) {
-//        if ([adUnitID hasPrefix:@"ASTAR-MRAIDTEST"]) {
-//            return [NSURL URLWithString:[NSString stringWithFormat:@"https://mraid-testing.astar.mobi/mraid.php?v=%@&udid=%@&id=%@&nv=%@",
-//                                         MP_SERVER_VERSION,
-//                                         [MPIdentityProvider identifier],
-//                                         [adUnitID stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-//                                         MP_SDK_VERSION]];
-//        }
-//    }
-
-
-    return [self URLWithEndpointPath:MOPUB_API_PATH_AD_REQUEST postData:queryParams];
+    return [self URLWithComponents:MPAPIEndpoints.adRequestURLComponents postData:queryParams];
 }
 
 + (NSString *)orientationValue
@@ -456,7 +446,7 @@ static MPEngineInfo * _engineInfo = nil;
         queryParameters[kOpenEndpointSessionTrackingKey] = @"1";
     }
 
-    return [self URLWithEndpointPath:MOPUB_API_PATH_OPEN postData:queryParameters];
+    return [self URLWithComponents:MPAPIEndpoints.openURLComponents postData:queryParameters];
 }
 
 @end
@@ -490,7 +480,7 @@ static MPEngineInfo * _engineInfo = nil;
     // OPTIONAL: Force GDPR appliciability has changed
     postData[kForcedGDPRAppliesChangedKey] = manager.isForcedGDPRAppliesTransition ? @"1" : nil;
 
-    return [self URLWithEndpointPath:MOPUB_API_PATH_CONSENT_SYNC postData:postData];
+    return [self URLWithComponents:MPAPIEndpoints.consentSyncURLComponents postData:postData];
 }
 
 + (MPURL *)consentDialogURL {
@@ -503,7 +493,7 @@ static MPEngineInfo * _engineInfo = nil;
     // REQUIRED: Language
     postData[kLanguageKey] = manager.currentLanguageCode;
 
-    return [self URLWithEndpointPath:MOPUB_API_PATH_CONSENT_DIALOG postData:postData];
+    return [self URLWithComponents:MPAPIEndpoints.consentDialogURLComponents postData:postData];
 }
 
 @end
@@ -517,7 +507,7 @@ static MPEngineInfo * _engineInfo = nil;
     }
 
     NSDictionary * queryItems = [self baseParametersDictionaryWithIDParameter:adUnitId];
-    return [self URLWithEndpointPath:MOPUB_API_PATH_NATIVE_POSITIONING postData:queryItems];
+    return [self URLWithComponents:MPAPIEndpoints.nativePositioningURLComponents postData:queryItems];
 }
 
 @end
@@ -576,7 +566,7 @@ static MPEngineInfo * _engineInfo = nil;
     }
 
     // Get URL components
-    NSURLComponents * components = [MPAPIEndpoints callbackBaseURLComponentsWithPath:MOPUB_CALLBACK_API_PATH_SKADNETWORK_SYNC];
+    NSURLComponents * components = MPAPIEndpoints.skAdNetworkSyncURLComponents;
 
     // Get base parameters dictionary
     NSMutableDictionary <NSString *, __kindof NSObject *> * queryParameters = [self baseParametersDictionary];

@@ -21,10 +21,6 @@
 #import "NSJSONSerialization+MPAdditions.h"
 #import "NSString+MPAdditions.h"
 
-#if __has_include("MOPUBNativeVideoCustomEvent.h")
-#import "MOPUBNativeVideoCustomEvent.h"
-#endif
-
 #if __has_include("MPMoPubNativeCustomEvent.h")
 #import "MPMoPubNativeCustomEvent.h"
 #endif
@@ -69,9 +65,6 @@ NSString * const kOrientationTypeMetadataKey = @"x-orientation";
 NSString * const kNativeImpressionMinVisiblePixelsMetadataKey = @"x-native-impression-min-px"; // The pixels Metadata takes priority over percentage, but percentage is left for backwards compatibility
 NSString * const kNativeImpressionMinVisiblePercentMetadataKey = @"x-impression-min-visible-percent";
 NSString * const kNativeImpressionVisibleMsMetadataKey = @"x-impression-visible-ms";
-NSString * const kNativeVideoPlayVisiblePercentMetadataKey = @"x-play-visible-percent";
-NSString * const kNativeVideoPauseVisiblePercentMetadataKey = @"x-pause-visible-percent";
-NSString * const kNativeVideoMaxBufferingTimeMsMetadataKey = @"x-max-buffer-ms";
 NSString * const kVASTVideoTrackersMetadataKey = @"x-video-trackers";
 
 NSString * const kBannerImpressionVisableMsMetadataKey = @"x-banner-impression-min-ms";
@@ -82,7 +75,6 @@ NSString * const kAdTypeInterstitial = @"interstitial";
 NSString * const kAdTypeMraid = @"mraid";
 NSString * const kAdTypeClear = @"clear";
 NSString * const kAdTypeNative = @"json";
-NSString * const kAdTypeNativeVideo = @"json_video";
 NSString * const kAdTypeRewardedVideo = @"rewarded_video";
 NSString * const kAdTypeRewardedPlayable = @"rewarded_playable";
 NSString * const kAdTypeVAST = @"vast"; // a possible value of "x-fulladtype"
@@ -209,17 +201,11 @@ NSString * const kVASTClickabilityExperimentKey = @"vast-click-enabled";
 
     self.metadataAdType = [metadata objectForKey:kAdTypeMetadataKey];
 
-    self.nativeVideoPlayVisiblePercent = [self percentFromMetadata:metadata forKey:kNativeVideoPlayVisiblePercentMetadataKey];
-
-    self.nativeVideoPauseVisiblePercent = [self percentFromMetadata:metadata forKey:kNativeVideoPauseVisiblePercentMetadataKey];
-
     self.nativeImpressionMinVisiblePixels = [[self adAmountFromMetadata:metadata key:kNativeImpressionMinVisiblePixelsMetadataKey] floatValue];
 
     self.nativeImpressionMinVisiblePercent = [self percentFromMetadata:metadata forKey:kNativeImpressionMinVisiblePercentMetadataKey];
 
     self.nativeImpressionMinVisibleTimeInterval = [self timeIntervalFromMsmetadata:metadata forKey:kNativeImpressionVisibleMsMetadataKey];
-
-    self.nativeVideoMaxBufferingTime = [self timeIntervalFromMsmetadata:metadata forKey:kNativeVideoMaxBufferingTimeMsMetadataKey];
 
     // VAST video trackers
     self.vastVideoTrackers = [self vastVideoTrackersFromMetadata:metadata key:kVASTVideoTrackersMetadataKey];
@@ -319,7 +305,6 @@ NSString * const kVASTClickabilityExperimentKey = @"vast-click-enabled";
         adapterTable = @{@"admob_native": @"MPGoogleAdMobBannerCustomEvent", // optional class
         kAdTypeHtml: NSStringFromClass([MPHTMLBannerCustomEvent class]),
         kAdTypeMraid: NSStringFromClass([MPMoPubInlineAdAdapter class]),
-        kAdTypeNativeVideo: @"MOPUBNativeVideoCustomEvent", // optional native class
         kAdTypeNative: @"MPMoPubNativeCustomEvent"};        // optional native class
     }
 
